@@ -1,0 +1,79 @@
+<!DATATYPE html>
+<html>
+  <head>
+    <title>service client</title>
+    
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+</style>
+
+  
+  </head>
+  <body>
+    <h1>OCR Text Extractor</h1>
+   <label for="name">Name:</label>
+<input type="text" id="name" name="name">
+<label for="info">Information:</label>
+<input type="text" id="info" name="info">
+<button onclick="saveInfo()">Save</button>
+<table id="infoTable"></table>
+
+    <script>
+    // Function to save user's name to local storage
+function saveName() {
+  const name = document.getElementById("name").value;
+  localStorage.setItem("name", name);
+}
+
+// Function to save user's information to an array in info.js
+function saveInfo() {
+  const info = document.getElementById("info").value;
+  const date = new Date().toLocaleDateString();
+  const savedInfo = JSON.parse(localStorage.getItem("savedInfo")) || [];
+  savedInfo.push({ info, date });
+  localStorage.setItem("savedInfo", JSON.stringify(savedInfo));
+  displayInfo();
+}
+
+// Function to display saved information in a table
+function displayInfo() {
+  const savedInfo = JSON.parse(localStorage.getItem("savedInfo")) || [];
+  const table = document.getElementById("infoTable");
+  table.innerHTML = "";
+  savedInfo.forEach((item, index) => {
+    const row = table.insertRow();
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = "checkbox" + index;
+    const cell1 = row.insertCell();
+    const cell2 = row.insertCell();
+    const cell3 = row.insertCell();
+    cell1.appendChild(checkbox);
+    cell2.innerHTML = item.info;
+    cell3.innerHTML = item.date;
+  });
+}
+
+// Call saveName() on page load to save user's name
+saveName();
+
+// Call displayInfo() on page load to display saved information
+displayInfo();
+
+    </script>
+  </body>
+</html>
